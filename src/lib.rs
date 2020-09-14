@@ -128,3 +128,33 @@ pub trait Producer<'a> {
 fn into_poll<T>(opt: Option<T>) -> Poll<T> {
     opt.map(Poll::Ready).unwrap_or(Poll::Pending)
 }
+
+#[cfg(feature = "with-flume")]
+impl<'a, T: 'static> Producer<'a> for flume::Receiver<T> {
+    type Output = Result<T, flume::RecvError>;
+    type Future = flume::r#async::RecvFut<'a, T>;
+
+    fn produce(&'a self) -> Self::Future {
+        self.recv_async()
+    }
+}
+
+#[cfg(feature = "with-barrage")]
+impl<'a, T: 'static + Clone + Unpin> Producer<'a> for barrage::Receiver<T> {
+    type Output = Result<T, barrage::Disconnected>;
+    type Future = barrage::RecvFut<'a, T>;
+
+    fn produce(&'a self) -> Self::Future {
+        self.recv_async()
+    }
+}
+
+#[cfg(feature = "with-barrage")]
+impl<'a, T: 'static + Clone + Unpin> Producer<'a> for barrage::SharedReceiver<T> {
+    type Output = Result<T, barrage::Disconnected>;
+    type Future = barrage::RecvFut<'a, T>;
+
+    fn produce(&'a self) -> Self::Future {
+        self.recv_async()
+    }
+}

@@ -1,3 +1,7 @@
+# This crate does not actually work
+
+I'm talking, like, don't use this please. It does not work. This was just An Attempt made in about an hour and I will Not Be Fixing It. Feel free to fork it though.
+
 # umthombo
 
 Select over two or three "streams" of futures, only polling whichever is woken.

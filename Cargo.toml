@@ -1,0 +1,21 @@
+[package]
+name = "umthombo"
+description = "A crate for selecting between producers of futures"
+version = "0.1.0"
+authors = ["Restioson <restiosondev@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+waker-fn = "1.1.0"
+spinny = "0.2.0"
+pin-project-lite = "0.1"
+
+[target.'cfg(loom)'.dependencies.loom]
+version = "0.3.5"
+features = ["futures"]
+
+[dev-dependencies]
+futures = "0.3.5"
+tokio = { version = "0.2", features = ["macros", "rt-threaded", "sync"] }
